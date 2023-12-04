@@ -18,12 +18,15 @@ class DLL:
             self.head = newNode
 
 class DAGraph:
-    def __init__(self,norp) -> None:
+    def __init__(self,norp,directed = False) -> None:
         self.n = norp
         self.m = 0
-        self.vertices = [ DLL(Node(i)) for i in range(1,norp+1)]
+        self.directed = directed
+        self.vertices = [ DLL() for i in range(1,norp+1)]
     def addEdge(self,u,v):#edge = touple of structure (x,y), where  1<=x,y<=n.
         self.vertices[u-1].addNode(Node(v))
+        if self.directed is False:
+            self.vertices[v-1].addNode(Node(u))
     def printVertexEdges(self,u):
         #assumption: 1<=u<=n
         vertDll = self.vertices[u-1]
@@ -31,9 +34,16 @@ class DAGraph:
         while p is not None:
             print(f' ({u},{p.value})')
             p=p.prev
+    def printGraph(self):
+        for x in range(1,self.n+1):
+            self.printVertexEdges(x)
         
-dag1 = DAGraph(5)
+dag1 = DAGraph(5,True)
 dag1.addEdge(1,2)
 dag1.addEdge(1,3)
 dag1.addEdge(1,5)
-dag1.printVertexEdges(1)
+dag1.addEdge(2,4)
+dag1.addEdge(2,5)
+dag1.addEdge(3,4)
+dag1.addEdge(5,3)
+dag1.printGraph()
